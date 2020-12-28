@@ -1,49 +1,59 @@
 class BooksController < ApplicationController
-  def top
-  end
+  before_action :set_book, only: [:show, :edit, :update, :destroy]
 
+  # GET /books
+  # GET /books.json
   def index
-    @books = Book.all
     @book = Book.new
+    @books = Book.all
   end
 
+  # GET /books/1
+  # GET /books/1.json
+  def show
+  end
+
+  # GET /books/1/edit
+  def edit
+  end
+
+  # POST /books
+  # POST /books.json
   def create
+    @books = Book.all
     @book = Book.new(book_params)
     if @book.save
-      flash[:notice] = "Book was successfully created."
-      redirect_to book_path(@book.id)
+       redirect_to @book, notice: 'Book was successfully created.'
     else
       render :index
     end
   end
 
-  def show
-    @book = Book.find(params[:id])
-  end
-
-  def edit
-    @book = Book.find(params[:id])
-  end
-
+  # PATCH/PUT /books/1
+  # PATCH/PUT /books/1.json
   def update
-    @book = Book.find(params[:id])
-    if @book.update()
-      flash[:notice] = "Book was successfully updated."
-      redirect_to book_path(@book.id)
+     if @book.update(book_params)
+      redirect_to book_path(@book), notice: 'Book was successfully updated.'
     else
       render :edit
     end
   end
 
+  # DELETE /books/1
+  # DELETE /books/1.json
   def destroy
-    book = Book.find(params[:id])
-    book.destroy
-    redirect_to books_path
+    @book.destroy
+    redirect_to books_url, notice: 'Book was successfully destroyed.'
   end
 
   private
+    # Use callbacks to share common setup or constraints between actions.
+    def set_book
+      @book = Book.find(params[:id])
+    end
 
-  def book_params
-    params.require(:book).permit(:title, :body)
-  end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def book_params
+      params.require(:book).permit(:title, :body)
+    end
 end
