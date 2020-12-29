@@ -1,5 +1,5 @@
 class BooksController < ApplicationController
-  before_action :set_book, only: [:show, :edit, :update, :destroy]
+  before_action :hoge, only: [:show, :edit, :update, :destroy]
 
   def index
     @book = Book.new
@@ -37,10 +37,9 @@ class BooksController < ApplicationController
 
   private
    
-    def set_book
+    def hoge
       @book = Book.find(params[:id])
     end
-
 
     def book_params
       params.require(:book).permit(:title, :body)
